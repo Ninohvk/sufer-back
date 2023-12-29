@@ -2,7 +2,7 @@ import 'dotenv/config'
 // Import the framework and instantiate it
 import Fastify from 'fastify'
 const fastify = Fastify({
-  logger: true
+  logger: true,
 })
 
 import OpenAI from "openai";
@@ -24,7 +24,7 @@ fastify.get('/', async function handler (request, reply) {
 
 // Run the server!
 try {
-  await fastify.listen({ port: 1000 })
+  await fastify.listen({ host: '0.0.0.0', port: 80 })
 } catch (err) {
   fastify.log.error(err)
   process.exit(1)
