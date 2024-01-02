@@ -40,7 +40,7 @@ fastify.post('/movies', async function handler (request, reply) {
   console.log('====== body ======: ', request.body.Body)
 
   const openai = new OpenAI({
-    apiKey: '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',
+    apiKey: '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',
   });
 
   const chatCompletion = await openai.chat.completions.create({
