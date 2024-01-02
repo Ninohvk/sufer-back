@@ -1,9 +1,8 @@
-import twilio from "twilio";
+// import twilio from "twilio";
 import formbody from '@fastify/formbody';
-import path from 'path';
 import dotenv from 'dotenv';
 const dir = `./.env`;
-dotenv.config({path: path.resolve(process.env.NODE_ENV? `${dir}.${process.env.NODE_ENV}` : dir)});
+dotenv.config({path: dir});
 const ENV = process.env;
 
 // Import the framework and instantiate it
@@ -40,7 +39,7 @@ fastify.post('/movies', async function handler (request, reply) {
   console.log('====== body ======: ', request.body.Body)
 
   const openai = new OpenAI({
-    apiKey: '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',
+    apiKey: ENV.OPENAI_API_KEY,
   });
 
   const chatCompletion = await openai.chat.completions.create({
