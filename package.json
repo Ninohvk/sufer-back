@@ -11,9 +11,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@fastify/formbody": "^7.4.0",
     "dotenv": "^16.3.1",
     "fastify": "^4.25.2",
-    "openai": "^4.24.1"
+    "openai": "^4.24.1",
+    "twilio": "^4.20.0"
   },
   "devDependencies": {
     "nodemon": "^3.0.2"
