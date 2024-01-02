@@ -37,6 +37,7 @@ fastify.get('/', async function handler (request, reply) {
 // receive message
 fastify.post('/movies', async function handler (request, reply) {
   console.log('====== body ======: ', request.body.Body)
+  console.log('====== OPENAI_API_KEY ======: ', ENV.OPENAI_API_KEY)
 
   const openai = new OpenAI({
     apiKey: ENV.OPENAI_API_KEY,
