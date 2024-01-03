@@ -1,19 +1,20 @@
-// import twilio from "twilio";
+import Fastify from 'fastify'
 import formbody from '@fastify/formbody';
 import dotenv from 'dotenv';
-const dir = `./.env`;
-dotenv.config({path: dir});
+import OpenAI from "openai";
+
+// Configuración de environment
+dotenv.config({path: `./.env`});
 const ENV = process.env;
 
 // Import the framework and instantiate it
-import Fastify from 'fastify'
 const fastify = Fastify({
   logger: true,
 })
 fastify.register(formbody)
 
-
-import OpenAI from "openai";
+// Data
+const conversations = []
 
 // Declare a route
 fastify.get('/', async function handler (request, reply) {
@@ -22,7 +23,7 @@ fastify.get('/', async function handler (request, reply) {
 
 // receive message
 fastify.post('/movies', async function handler (request, reply) {
-  console.log('====== body ======: ', request.body.Body)
+  console.log('====== body ======: ', request.body)
   const openAiKey = Buffer.from(ENV.OPENAI_API_KEY, 'base64').toString('utf-8');
 
   const openai = new OpenAI({
