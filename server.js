@@ -14,7 +14,7 @@ const fastify = Fastify({
 fastify.register(formbody)
 
 // Data
-const conversations = []
+let conversations = []
 
 // Declare a route
 fastify.get('/', async function handler (request, reply) {
@@ -31,15 +31,15 @@ fastify.post('/movies', async function handler (request, reply) {
     apiKey: openAiKey,
   });
 
-  const currentConversation = null
+  let currentConversation = null
   const currentUserMessage = { role: "user", content: request.body.Body }
 
   if(!conversations[id]) {
-    currentConversation = {
+      currentConversation = {
       id,
       messages: [
         { role: "system", content: "Actua como un asistente experto en películas, solo habla de temas relacionados a películas, si te preguntan o hablan de otro tema indica que no tienes permitido hablar de otro tema." },
-        ...currentUserMessage
+        currentUserMessage
       ]
     }
   }
@@ -57,7 +57,8 @@ fastify.post('/movies', async function handler (request, reply) {
   currentConversation.messages.push(chatCompletion.choices[0].message);
   conversations[id] = currentConversation;
 
-  console.log("####### conversations ##########:", conversations)
+  console.log("####### conversations ##########:")
+  console.dir(conversations, { depth: null, colors: true })
   console.log('================= end /movies =================')
   return response;
 });
