@@ -23,9 +23,10 @@ fastify.get('/', async function handler (request, reply) {
 // receive message
 fastify.post('/movies', async function handler (request, reply) {
   console.log('====== body ======: ', request.body.Body)
+  const openAiKey = Buffer.from(ENV.OPENAI_API_KEY, 'base64').toString('utf-8');
 
   const openai = new OpenAI({
-    apiKey: ENV.OPENAI_API_KEY,
+    apiKey: openAiKey,
   });
 
   const chatCompletion = await openai.chat.completions.create({
