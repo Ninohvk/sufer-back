@@ -23,20 +23,42 @@ fastify.get('/', async function handler (request, reply) {
 
 // receive message
 fastify.post('/movies', async function handler (request, reply) {
-  console.log('====== body ======: ', request.body)
+  console.log('================= init /movies =================')
   const openAiKey = Buffer.from(ENV.OPENAI_API_KEY, 'base64').toString('utf-8');
+  const id = request.body.WaId ? request.body.WaId : '2122';
 
   const openai = new OpenAI({
     apiKey: openAiKey,
   });
 
+  const currentConversation = null
+  const currentUserMessage = { role: "user", content: request.body.Body }
+
+  if(!conversations[id]) {
+    currentConversation = {
+      id,
+      messages: [
+        { role: "system", content: "Actua como un asistente experto en películas, solo habla de temas relacionados a películas, si te preguntan o hablan de otro tema indica que no tienes permitido hablar de otro tema." },
+        ...currentUserMessage
+      ]
+    }
+  }
+  else {
+    currentConversation = conversations[id];
+    currentConversation.messages.push(currentUserMessage)
+  }
+
   const chatCompletion = await openai.chat.completions.create({
-      messages: [{ role: "user", content: request.body.Body }],
+      messages: currentConversation.messages,
       model: "gpt-3.5-turbo",
   });
 
   const response = chatCompletion.choices[0].message.content;
-  console.log('======= chatCompletion ======', chatCompletion.choices[0].message.content)
+  currentConversation.messages.push(chatCompletion.choices[0].message);
+  conversations[id] = currentConversation;
+
+  console.log("####### conversations ##########:", conversations)
+  console.log('================= end /movies =================')
   return response;
 });
 
